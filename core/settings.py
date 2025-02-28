@@ -326,3 +326,10 @@ DATABASES = {
         default=env("DATABASE_URL")
     ),
 }
+
+ALLOWED_HOSTS = ["*"]
+
+X_FRAME_OPTIONS = "SAMEORIGIN"
+
+XS_SHARING_ALLOWED_METHODS = ["POST", "GET", "OPTIONS", "PUT", "DELETE"]
+CSRF_TRUSTED_ORIGINS = ["http://*", "https://*", "https://*.up.railway.app","https://medical-api.up.railway.app/"]
