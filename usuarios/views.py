@@ -1,6 +1,6 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
-from rest_framework.permissions import IsAdminUser, IsAuthenticated
+from rest_framework.permissions import IsAdminUser, IsAuthenticated, AllowAny
 
 
 from .models import Usuario, Genero, Tension
@@ -43,6 +43,7 @@ class ChangeUserProfileViewSet(ModelViewSet):
 class GeneroViewSet(ModelViewSet):
     queryset = Genero.objects.all()
     serializer_class = GeneroSerializer
+    permission_classes = [AllowAny]
 
 
 class TensionViewSet(ModelViewSet):
