@@ -41,7 +41,7 @@ SECRET_KEY = env("SECRET_KEY")
 PRODUCTION = True if env("PRODUCTION") == 1 else False
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = not PRODUCTION
+DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
