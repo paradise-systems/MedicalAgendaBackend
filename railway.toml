@@ -1,0 +1,6 @@
+[build]
+builder = "NIXPACKS"
+
+[deploy]
+preDeployCommand = ["sh collect-migrate.sh"]
+startCommand = "gunicorn core.wsgi"

@@ -1,0 +1,81 @@
+
+{% extends 'admin/base.html' %}
+{% load i18n log %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
+
+{% block branding %}
+    <h1 id="site-name">
+        <a href="{% url 'admin:index' %}">
+            {{ site_header|default:_('Django administration') }}
+        </a>
+    </h1>
+{% endblock %}
+
+
+
+
+{% block content %}
+
+<div class="flex flex-col lg:flex-row lg:gap-8">
+  <div class="flex-grow">
+    {% include "unfold/helpers/app_list_default.html" %}
+  </div>
+  
+  <div class="flex flex-col basis-1/4 gap-8">
+    <h1 class="font-bold dark:text-white text-black text-xl">
+      Acciones Recientes
+    </h1>
+    <ol class="relative border-s border-gray-200 dark:border-gray-700">
+    
+      {% get_admin_log 5 as admin_log for_user user %}
+      {% for entry in admin_log %}
+        <li class="mb-10 ms-6">
+            <span
+            class="absolute flex items-center p-2 justify-center w-8 h-8 rounded-full -start-4 {% if entry.action_flag == 3%}bg-red-400 dark:bg-red-600{% endif %}{% if entry.action_flag == 2%}bg-blue-400 dark:bg-blue-600{% endif %}{% if entry.action_flag == 1%}bg-green-400 dark:bg-green-600{% endif %}"
+            >
+              {% if entry.action_flag == 3 %}<span class="material-symbols-outlined text-white">DELETE</span>{% endif %}
+              {% if entry.action_flag == 2 %}<span class="material-symbols-outlined text-white">edit</span>{% endif %}
+              {% if entry.action_flag == 1 %}<span class="material-symbols-outlined text-white">add_circle</span>{% endif %}
+            </span>
+
+            <h3 class="mb-1 text-lg font-semibold text-gray-600 dark:text-white">
+              {% if entry.content_type %} 
+                {% filter capfirst %}
+  
+                    {{entry.content_type.name|capfirst  }}
+  
+                    {% endfilter %} 
+                
+                {% else %} 
+                
+                {% translate 'Unknown content' %} 
+          
+              {% endif %}
+            </h3>
+            
+            <time
+            class="block mb-2 text-sm font-normal leading-none text-gray-400 dark:text-gray-500"
+            >
+              {{ entry.action_time }}
+            </time>
+            
+            <p class="text-base font-normal text-gray-500 dark:text-gray-400">
+
+            {% if entry.is_deletion or not entry.get_admin_url %} 
+              {{entry}} 
+
+            {% else %}
+
+              <a href="{{ entry.get_admin_url }}">{{ entry }}</a>
+            {% endif %}
+            </p>
+        </li>
+      {% endfor %}
+    </ol>
+  </div>
+</div>
+
+{% endblock %}
